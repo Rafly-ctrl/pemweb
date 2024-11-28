@@ -10,9 +10,16 @@ if (isset($_POST['submit'])) {
     $image = $_FILES['image']['name'];
     $tempImage = $_FILES['image']['tmp_name'];
 
-    $randomFilename = time() . '-' . md5(rand()) . '-' . $image;
+    // Tentukan path upload directory
+    $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/upload';
+    
+    // Buat direktori jika belum ada
+    if (!file_exists($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
 
-    $uploadPath = $_SERVER['DOCUMENT_ROOT'] . '/upload/' . $randomFilename;
+    $randomFilename = time() . '-' . md5(rand()) . '-' . $image;
+    $uploadPath = $uploadDir . '/' . $randomFilename;
 
     $upload = move_uploaded_file($tempImage, $uploadPath);
 
